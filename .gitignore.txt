@@ -1,0 +1,7 @@
+# Archivos de configuración y credenciales que no deben subirse
+config.py
+credentials.json
+
+# Archivos generados por Python que no son necesarios
+__pycache__/
+*.pyc
