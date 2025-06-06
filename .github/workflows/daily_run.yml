@@ -4,11 +4,14 @@ name: Ejecutar Optimizador de Rutas Diario
 on:
   # 'on' define cuándo se debe activar este flujo de trabajo.
   schedule:
-    # 'schedule' lo activa en un horario fijo.
-    # Se usa el formato "cron". '0 18 * * *' significa:
-    # minuto 0, hora 18, todos los días del mes, todos los meses, todos los días de la semana.
-    # La hora es UTC. Las 18:00 UTC son las 14:00 en Chile continental (UTC-4).
-    - cron: '0 18 * * *'
+    # 'schedule' lo activa en un horario fijo. Se pueden definir varias reglas.
+    # El formato es "minuto hora dia-del-mes mes dia-de-la-semana" en UTC.
+    
+    # Regla 1: Se ejecuta a las 18:00 UTC (14:00 Chile) de Lunes (1) a Jueves (4).
+    - cron: '0 18 * * 1-4'
+    
+    # Regla 2: Se ejecuta a las 20:00 UTC (16:00 Chile) solo los Viernes (5).
+    - cron: '0 20 * * 5'
     
   # 'workflow_dispatch' te permite ejecutar el flujo de trabajo manualmente
   # desde la pestaña "Actions" de GitHub, para hacer pruebas.
