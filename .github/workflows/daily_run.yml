@@ -1,0 +1,65 @@
+# Nombre del flujo de trabajo que aparecerá en la pestaña "Actions" de GitHub.
+name: Ejecutar Optimizador de Rutas Diario
+
+on:
+  # 'on' define cuándo se debe activar este flujo de trabajo.
+  schedule:
+    # 'schedule' lo activa en un horario fijo.
+    # Se usa el formato "cron". '0 18 * * *' significa:
+    # minuto 0, hora 18, todos los días del mes, todos los meses, todos los días de la semana.
+    # La hora es UTC. Las 18:00 UTC son las 14:00 en Chile continental (UTC-4).
+    - cron: '0 18 * * *'
+    
+  # 'workflow_dispatch' te permite ejecutar el flujo de trabajo manualmente
+  # desde la pestaña "Actions" de GitHub, para hacer pruebas.
+  workflow_dispatch:
+
+jobs:
+  # Un flujo de trabajo se compone de uno o más "trabajos" (jobs).
+  build-and-run:
+    # Nombre del trabajo.
+    # Le decimos a GitHub que use una máquina virtual con el sistema operativo
+    # más reciente de Ubuntu (una versión de Linux).
+    runs-on: ubuntu-latest
+
+    # 'steps' son las acciones que se ejecutarán en orden.
+    steps:
+      # Paso 1: Descargar tu código.
+      # Usa una acción pre-hecha por GitHub ('actions/checkout') para clonar
+      # tu repositorio en la máquina virtual.
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Paso 2: Preparar Python.
+      # Usa otra acción pre-hecha para instalar la versión de Python que necesites.
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # Paso 3: Instalar las "compras".
+      # Ejecuta comandos en la terminal de la máquina virtual.
+      # Primero actualiza 'pip' (el instalador de Python) y luego instala
+      # todas las librerías listadas en tu 'requirements.txt'.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Paso 4: Crear el archivo de credenciales.
+      # Usa el comando 'echo' para escribir en un archivo.
+      # Lo que escribe es el contenido del secreto que guardamos en GitHub.
+      - name: Create Google Sheets credentials file
+        run: echo '${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}' > credentials.json
+
+      # Paso 5: Crear el archivo de configuración de Maps.
+      # Hace lo mismo que el paso anterior, pero para la clave de API de Maps.
+      - name: Create Google Maps config file
+        run: echo "MAPS_API_KEY = '${{ secrets.GOOGLE_MAPS_API_KEY }}'" > config.py
+
+      # Paso 6: ¡Ejecutar tu script!
+      # Llama a Python para que ejecute tu archivo principal.
+      # Asegúrate de que el nombre 'Optimizacion_Logistica.py' sea el correcto.
+      - name: Run routing optimization script
+        run: python Optimizacion_Logistica.py
+
