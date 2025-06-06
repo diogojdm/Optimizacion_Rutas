@@ -10,8 +10,11 @@ on:
     # Regla 1: Se ejecuta a las 18:00 UTC (14:00 Chile) de Lunes (1) a Jueves (4).
     - cron: '0 18 * * 1-4'
     
-    # Regla 2: Se ejecuta a las 20:00 UTC (16:00 Chile) solo los Viernes (5).
-    - cron: '0 20 * * 5'
+    # Regla 2: Se ejecuta a las 13:00 UTC (09:00 Chile) solo los Viernes (5).
+    - cron: '0 13 * * 5'
+
+    # Regla 3: Se ejecuta a las 19:00 UTC (15:00 Chile) solo los Viernes (5).
+    - cron: '0 19 * * 5'
     
   # 'workflow_dispatch' te permite ejecutar el flujo de trabajo manualmente
   # desde la pestaña "Actions" de GitHub, para hacer pruebas.
@@ -65,4 +68,3 @@ jobs:
       # Asegúrate de que el nombre 'Optimizacion_Logistica.py' sea el correcto.
       - name: Run routing optimization script
         run: python Optimizacion_Logistica.py
-
