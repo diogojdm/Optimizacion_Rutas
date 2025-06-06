@@ -7,8 +7,8 @@ on:
     # 'schedule' lo activa en un horario fijo. Se pueden definir varias reglas.
     # El formato es "minuto hora dia-del-mes mes dia-de-la-semana" en UTC.
     
-    # Regla 1: Se ejecuta a las 18:00 UTC (14:00 Chile) de Lunes (1) a Jueves (4).
-    - cron: '0 18 * * 1-4'
+    # Regla 1: Se ejecuta a las 14:00 UTC (10:00 Chile) de Lunes (1) a Jueves (4).
+    - cron: '0 14 * * 1-4'
     
     # Regla 2: Se ejecuta a las 13:00 UTC (09:00 Chile) solo los Viernes (5).
     - cron: '0 13 * * 5'
